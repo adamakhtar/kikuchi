@@ -2,7 +2,6 @@ require 'sinatra/base'
 
 class StaticFileServer < Sinatra::Base
   get /.+/ do
-    require 'pry'; binding.pry
     serve_static_page(request.path_info)
   end
 
