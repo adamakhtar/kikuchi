@@ -25,7 +25,7 @@ module Kikuchi
 
     #TODO link to post
     def url
-      "blah"
+      "posts/#{date.strftime("%Y/%m/%d")}/#{slug}"
     end
 
     #returns humany friendly title

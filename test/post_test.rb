@@ -33,6 +33,11 @@ class TestPost < Test::Unit::TestCase
     assert_equal "2005/12/31", p.dir
   end
 
+  def test_url
+    p = Post.create(File.join(File.dirname(__FILE__), "fixtures", "posts"), "2005-12-31-this-is-a-post.markdown") 
+    assert_match "posts/2005/12/31/this-is-a-post", p.url
+  end
+
   def test_write
     clear_dest
     post = Post.create( File.join(File.dirname(__FILE__), *%w[fixtures posts]), "2005-12-31-this-is-a-post.markdown")
