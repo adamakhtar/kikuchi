@@ -71,7 +71,9 @@ module Kikuchi
     def render(layout=nil)
       self.content = Liquid::Template.parse(content).render()
       self.content = transform(content)
-      self.output   = self.content
+      #TODO - move post html wrapper to a layout and allow
+      #muliple layouts to be rendered for a post. 
+      self.output  = %Q{<div id="post">#{self.content}</div>} 
       
       #render layout
       return unless layout
