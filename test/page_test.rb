@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "helper")
+require_relative "helper"
 
 
 class TestPage < Test::Unit::TestCase
@@ -12,7 +12,7 @@ class TestPage < Test::Unit::TestCase
     p = Page.new(File.join(File.dirname(__FILE__), "fixtures"), "about.html")
     p.read_content
     p.render({})
-    assert_equal "<h1>About</h1>", p.output.strip
+    assert_equal "<h1>About</h1>", p.output
   end
 
   def test_render_with_payload

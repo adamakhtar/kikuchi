@@ -24,7 +24,7 @@ class TestPost < Test::Unit::TestCase
   def test_render_with_layout
     p = Post.create(File.join(File.dirname(__FILE__), "fixtures", "posts"), "2005-12-31-this-is-a-post.markdown") 
     p.render(File.join(File.dirname(__FILE__), *%w[fixtures layouts layout.html]))
-    assert_equal %Q{<div id="layout"><h1>This is my first post</h1>\n</div>}, p.output.rstrip
+    assert_equal %Q{<div id="layout"><h1>This is my first post</h1></div>}, p.output.rstrip
   end
 
   def test_dir

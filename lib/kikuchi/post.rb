@@ -63,7 +63,7 @@ module Kikuchi
 
     #transform markdown into html
     def transform(input)
-       RDiscount.new(input).to_html if extension == ".markdown"
+       RDiscount.new(input).to_html.strip if extension == ".markdown"
     end
 
     #renders the post with its layout

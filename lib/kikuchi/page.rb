@@ -29,7 +29,7 @@ module Kikuchi
 
     #transform markdown into html
     def transform(input)
-       RDiscount.new(input).to_html
+       RDiscount.new(input).to_html.strip
     end
 
     #write page to destination directory
