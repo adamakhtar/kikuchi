@@ -63,14 +63,17 @@ module Kikuchi
 
     #transform markdown into html
     def transform(input)
-       RDiscount.new(input).to_html if extension == ".markdown"
+       RDiscount.new(input).to_html.strip if extension == ".markdown"
     end
 
     #renders the post with its layout
     #[layout] is the path string to layout file
     def render(layout=nil)
-      self.output = transform(content)
-      self.output = Liquid::Template.parse(output).render()
+      self.content = Liquid::Template.parse(content).render()
+      self.content = transform(content)
+      #TODO - move post html wrapper to a layout and allow
+      #muliple layouts to be rendered for a post. 
+      self.output  = %Q{<div id="post">#{self.content}</div>} 
       
       #render layout
       return unless layout
