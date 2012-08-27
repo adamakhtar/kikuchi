@@ -12,7 +12,7 @@ class TestPage < Test::Unit::TestCase
     p = Page.new(File.join(File.dirname(__FILE__), "fixtures"), "about.html")
     p.read_content
     p.render({})
-    assert_equal "<h1>About</h1>", p.output
+    assert_equal "<h1>About</h1>", p.output.strip
   end
 
   def test_render_with_payload

@@ -18,10 +18,18 @@ module Kikuchi
     # renders the file to output
     # [layout] is wrapped around the page's content.
     def render(payload, layout=nil)
-      self.output = Liquid::Template.parse(content).render(payload)
+      # require "pry"; binding.pry
+      self.content = Liquid::Template.parse(content).render(payload)
+      self.content = transform(content)
+      self.output  = self.content
       return unless layout
       layout = File.read(layout)
       self.output = Liquid::Template.parse(layout).render('content' => output)
+    end
+
+    #transform markdown into html
+    def transform(input)
+       RDiscount.new(input).to_html
     end
 
     #write page to destination directory

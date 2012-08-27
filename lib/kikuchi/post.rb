@@ -69,8 +69,9 @@ module Kikuchi
     #renders the post with its layout
     #[layout] is the path string to layout file
     def render(layout=nil)
-      self.output = transform(content)
-      self.output = Liquid::Template.parse(output).render()
+      self.content = Liquid::Template.parse(content).render()
+      self.content = transform(content)
+      self.output   = self.content
       
       #render layout
       return unless layout
