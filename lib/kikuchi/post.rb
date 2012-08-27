@@ -68,17 +68,17 @@ module Kikuchi
 
     #renders the post with its layout
     #[layout] is the path string to layout file
-    def render(layout=nil)
+    def render(layouts=[])
       self.content = Liquid::Template.parse(content).render()
       self.content = transform(content)
-      #TODO - move post html wrapper to a layout and allow
-      #muliple layouts to be rendered for a post. 
-      self.output  = %Q{<div id="post">#{self.content}</div>} 
+      self.output  = self.content 
       
-      #render layout
-      return unless layout
-      layout_content = File.read(layout)
-      self.output = Liquid::Template.parse(layout_content).render('content' => self.output)
+      #render layouts - first layout in array will be inner most and last 
+      #will be outermost
+      return if layouts.empty?
+      layouts.each do |layout|
+        self.output = Liquid::Template.parse(layout.content).render('content' => output, 'post' => self)
+      end  
     end
 
     #renders and saves post in the destination directory

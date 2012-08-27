@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), "helper")
+require_relative "helper"
 
 
 class TestPost < Test::Unit::TestCase
@@ -18,13 +18,15 @@ class TestPost < Test::Unit::TestCase
   def test_render
     p = Post.create(File.join(File.dirname(__FILE__), *%w[fixtures posts]), "2005-12-31-this-is-a-post.markdown") 
     p.render 
-    assert_equal "<h1>This is my first post</h1>", p.output.rstrip 
+    assert_equal %Q{<h1>This is my first post</h1>}, p.output 
   end
 
-  def test_render_with_layout
+  def test_render_with_layouts
     p = Post.create(File.join(File.dirname(__FILE__), "fixtures", "posts"), "2005-12-31-this-is-a-post.markdown") 
-    p.render(File.join(File.dirname(__FILE__), *%w[fixtures layouts layout.html]))
-    assert_equal %Q{<div id="layout"><h1>This is my first post</h1></div>}, p.output.rstrip
+    inner = Layout.allocate.tap{|l| l.content = '<div id="inner">{{content}}</div>'}
+    outer = Layout.allocate.tap{|l| l.content = '<div id="outer">{{content}}</div>'}
+    p.render([inner, outer])
+    assert_equal %Q{<div id="outer"><div id="inner"><h1>This is my first post</h1></div></div>}, p.output
   end
 
   def test_dir
