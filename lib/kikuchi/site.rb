@@ -51,7 +51,7 @@ module Kikuchi
       pages = Dir["#{source_path}/*.html"].each do |p_name|
         page = Page.new(source_path, File.basename(p_name))
         # TODO allow user to specify which layouts a page should use 
-        page.render(site_payload, layouts.select{|x| x.name == "layout.html"})
+        page.render(site_payload, layouts.select{|x| x.name == "application.html"})
         page.write(destination_path)
       end
     end
