@@ -10,6 +10,7 @@ require 'kikuchi/cli'
 require 'kikuchi/site'
 require 'kikuchi/post'
 require 'kikuchi/page'
+require 'kikuchi/layout'
 
 #3rd party
 require 'liquid'

@@ -8,6 +8,12 @@ class TestSite < Test::Unit::TestCase
     assert_equal "2005-12-31-this-is-a-post.markdown", site.posts.first.name
   end
 
+  def test_read_layouts
+    site = Site.new(File.join(File.dirname(__FILE__), *%w[fixtures]), dest)
+    site.read_layouts
+    assert_equal "layout.html", site.layouts.first.name
+  end
+
   def test_write_posts
     clear_dest
     site = Site.new(File.join(File.dirname(__FILE__), *%w[fixtures]), dest)
@@ -20,7 +26,8 @@ class TestSite < Test::Unit::TestCase
   def test_write_pages
     clear_dest
     site = Site.new(File.join(File.dirname(__FILE__), *%w[fixtures]), dest)
-    site.write_pages
+    site.process
+  
     assert File.exists?(File.join(dest, "index.html"))
   end
 end

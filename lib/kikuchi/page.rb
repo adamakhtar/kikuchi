@@ -17,14 +17,17 @@ module Kikuchi
 
     # renders the file to output
     # [layout] is wrapped around the page's content.
-    def render(payload, layout=nil)
-      # require "pry"; binding.pry
+    def render(payload, layouts=[])
       self.content = Liquid::Template.parse(content).render(payload)
       self.content = transform(content)
       self.output  = self.content
-      return unless layout
-      layout = File.read(layout)
-      self.output = Liquid::Template.parse(layout).render('content' => output)
+
+      #render layouts - first layout in array will be inner most and last 
+      #will be outermost
+      return if layouts.empty?
+      layouts.each do |layout|
+        self.output = Liquid::Template.parse(layout.content).render('content' => self.output)
+      end  
     end
 
     #transform markdown into html
