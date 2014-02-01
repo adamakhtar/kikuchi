@@ -25,7 +25,7 @@ module Kikuchi
 
     #TODO link to post
     def url
-      "blah"
+      "posts/#{date.strftime("%Y/%m/%d")}/#{slug}"
     end
 
     #returns humany friendly title
@@ -63,19 +63,22 @@ module Kikuchi
 
     #transform markdown into html
     def transform(input)
-       RDiscount.new(input).to_html if extension == ".markdown"
+       RDiscount.new(input).to_html.strip if extension == ".markdown"
     end
 
     #renders the post with its layout
     #[layout] is the path string to layout file
-    def render(layout=nil)
-      self.output = transform(content)
-      self.output = Liquid::Template.parse(output).render()
+    def render(layouts=[])
+      self.content = Liquid::Template.parse(content).render()
+      self.content = transform(content)
+      self.output  = self.content 
       
-      #render layout
-      return unless layout
-      layout_content = File.read(layout)
-      self.output = Liquid::Template.parse(layout_content).render('content' => self.output)
+      #render layouts - first layout in array will be inner most and last 
+      #will be outermost
+      return if layouts.empty?
+      layouts.each do |layout|
+        self.output = Liquid::Template.parse(layout.content).render('content' => output, 'post' => self)
+      end  
     end
 
     #renders and saves post in the destination directory
